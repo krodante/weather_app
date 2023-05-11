@@ -1,0 +1,18 @@
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+/home/krodante/.asdf/installs/ruby/3.2.2/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-xhlpws sitelibdir\=./.gem.20230510-48398-xhlpws clean
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-xhlpws sitelibdir\=./.gem.20230510-48398-xhlpws
+compiling cruby.c
+linking shared-object skiptrace/internal/cruby.so
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-xhlpws sitelibdir\=./.gem.20230510-48398-xhlpws install
+/usr/bin/install -c -m 0755 cruby.so ./.gem.20230510-48398-xhlpws/skiptrace/internal
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-xhlpws sitelibdir\=./.gem.20230510-48398-xhlpws clean

@@ -1,0 +1,19 @@
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/debug-1.8.0/ext/debug
+/home/krodante/.asdf/installs/ruby/3.2.2/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/debug-1.8.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-lmzf5r sitelibdir\=./.gem.20230510-48398-lmzf5r clean
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/debug-1.8.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-lmzf5r sitelibdir\=./.gem.20230510-48398-lmzf5r
+compiling debug.c
+compiling iseq_collector.c
+linking shared-object debug/debug.so
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/debug-1.8.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-lmzf5r sitelibdir\=./.gem.20230510-48398-lmzf5r install
+/usr/bin/install -c -m 0755 debug.so ./.gem.20230510-48398-lmzf5r/debug
+
+current directory: /home/krodante/workspace/weather_app/vendor/bundle/ruby/3.2.0/gems/debug-1.8.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20230510-48398-lmzf5r sitelibdir\=./.gem.20230510-48398-lmzf5r clean

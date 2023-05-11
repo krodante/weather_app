@@ -27,9 +27,15 @@ class Geocoder
     case json_response["statusCode"]
     when 401
       raise Geocoder::Errors::UnauthorizedError.new(json_response["message"])
+    when "401"
+      raise Geocoder::Errors::UnauthorizedError.new(json_response["message"])
     when 400
       raise Geocoder::Errors::FormatError.new(json_response["message"])
+    when "400"
+      raise Geocoder::Errors::FormatError.new(json_response["message"])
     when 500
+      raise Geocoder::Errors::SystemError.new(json_response["message"])
+    when "500"
       raise Geocoder::Errors::SystemError.new(json_response["message"])
     end
   end

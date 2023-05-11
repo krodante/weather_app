@@ -27,7 +27,7 @@ class Weather
     response = @conn.get("/data/2.5/weather")
     json_response = JSON.parse(response.body)
 
-    if json_response["cod"] == 200
+    if [200, "200"].include?(json_response["cod"])
       Weather::Forecast.new(json_response)
     else
       show_errors(json_response)
@@ -38,7 +38,7 @@ class Weather
     response = @conn.get("/data/2.5/forecast")
     json_response = JSON.parse(response.body)
 
-    if json_response["cod"] == "200"
+    if [200, "200"].include?(json_response["cod"])
       json_response["list"].map do |forecast|
         Weather::Forecast.new(forecast)
       end
@@ -51,9 +51,15 @@ class Weather
     case json_response["cod"]
     when 401
       raise Weather::Errors::UnauthorizedError.new(json_response["message"])
+    when "401"
+      raise Weather::Errors::UnauthorizedError.new(json_response["message"])
+    when 400
+      raise Weather::Errors::FormatError.new(json_response["message"])
     when "400"
       raise Weather::Errors::FormatError.new(json_response["message"])
     when 500
+      raise Weather::Errors::SystemError.new(json_response["message"])
+    when "500"
       raise Weather::Errors::SystemError.new(json_response["message"])
     end
   end

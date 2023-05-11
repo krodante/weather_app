@@ -1,11 +1,9 @@
 require "faraday"
 
 class Weather
-  API_KEY="4dfc7fb711c57801d00402d7d0445eaf"
-
-  def initialize(lat = nil, lon = nil)
+  def initialize(lat, lon, conn = nil)
     if lat && lon
-      @conn = Faraday.new(
+      @conn = conn || Faraday.new(
         url: 'https://api.openweathermap.org',
         params: {
           lat: lat,
@@ -27,14 +25,42 @@ class Weather
 
   def current
     response = @conn.get("/data/2.5/weather")
-    Weather::Forecast.new(JSON.parse(response.body))
+    json_response = JSON.parse(response.body)
+
+    if json_response["cod"] == 200
+      Weather::Forecast.new(json_response)
+    else
+      show_errors(json_response)
+    end
   end
 
   def forecast
     response = @conn.get("/data/2.5/forecast")
+    json_response = JSON.parse(response.body)
 
-    JSON.parse(response.body)["list"].map do |forecast|
-      Weather::Forecast.new(forecast)
+    if json_response["cod"] == "200"
+      json_response["list"].map do |forecast|
+        Weather::Forecast.new(forecast)
+      end
+    else
+      show_errors(json_response)
     end
+  end
+
+  def show_errors(json_response)
+    case json_response["cod"]
+    when 401
+      raise Weather::Errors::UnauthorizedError.new(json_response["message"])
+    when "400"
+      raise Weather::Errors::FormatError.new(json_response["message"])
+    when 500
+      raise Weather::Errors::SystemError.new(json_response["message"])
+    end
+  end
+
+  module Errors
+    class FormatError < StandardError; end
+    class SystemError < StandardError; end
+    class UnauthorizedError < StandardError; end
   end
 end

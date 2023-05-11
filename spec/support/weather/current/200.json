@@ -1,0 +1,43 @@
+{
+  "coord": {
+    "lon": -122.4731,
+    "lat": 37.5852
+  },
+  "weather": [
+    {
+      "id": 721,
+      "main": "Haze",
+      "description": "haze",
+      "icon": "50d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 289.21,
+    "feels_like": 288.78,
+    "temp_min": 286.44,
+    "temp_max": 295.14,
+    "pressure": 1019,
+    "humidity": 73
+  },
+  "visibility": 9656,
+  "wind": {
+    "speed": 10.29,
+    "deg": 270
+  },
+  "clouds": {
+    "all": 100
+  },
+  "dt": 1683844361,
+  "sys": {
+    "type": 2,
+    "id": 2035599,
+    "country": "US",
+    "sunrise": 1683810252,
+    "sunset": 1683860905
+  },
+  "timezone": -25200,
+  "id": 5380420,
+  "name": "Pacifica",
+  "cod": 200
+}

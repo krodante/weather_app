@@ -1,28 +1,39 @@
+require "faraday"
+
 class Weather
-  include HTTParty
-  base_uri 'https://api.openweathermap.org'
   API_KEY="4dfc7fb711c57801d00402d7d0445eaf"
 
-  def initialize(lat, lon)
-    @options = {
-      query: {
-        lat: lat,
-        lon: lon,
-        units: "imperial",
-        appid: API_KEY
-      }
-    }
+  def initialize(lat = nil, lon = nil)
+    if lat && lon
+      @conn = Faraday.new(
+        url: 'https://api.openweathermap.org',
+        params: {
+          lat: lat,
+          lon: lon,
+          units: "imperial",
+          appid: API_KEY
+        }
+      )
+    end
   end
 
+  def cache_json
+    {
+      current_forecast: current,
+      five_day_forecast: forecast
+    }    
+  end
+  
+
   def current
-    response = self.class.get("/data/2.5/weather", @options)
-    Weather::Forecast.new(response)
+    response = @conn.get("/data/2.5/weather")
+    Weather::Forecast.new(JSON.parse(response.body))
   end
 
   def forecast
-    response = self.class.get("/data/2.5/forecast", @options)
+    response = @conn.get("/data/2.5/forecast")
 
-    response["list"].map do |forecast|
+    JSON.parse(response.body)["list"].map do |forecast|
       Weather::Forecast.new(forecast)
     end
   end

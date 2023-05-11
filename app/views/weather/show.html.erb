@@ -1,1 +1,5 @@
 <h1>Weather#show</h1>
+<p><%= "cached" if @read_from_cache %></p>
+<p><%= @weather_current.temp %></p>
+<p><%= @weather_current.temp_max %></p>
+<p><%= @weather_current.temp_min %></p>

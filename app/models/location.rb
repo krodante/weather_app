@@ -1,13 +1,8 @@
 class Location
-  attr_accessor :street1, :street2, :city, :state, :country, :zipcode, :lat, :lon
+  attr_accessor :text, :lat, :lon
 
-  def initialize(params)
-    @street1 ||= params[:street1]
-    @street2 ||= params[:street2]
-    @city ||= params[:city]
-    @state ||= params[:state]
-    @country ||= params[:country]
-    @zipcode ||= params[:zipcode]
+  def initialize(params = {})
+    @text ||= params[:text]
   end
 
   def set_coordinates

@@ -1,7 +1,5 @@
-<%= form_tag '/weather/show', method: :patch do %>
-  <%= text_field_tag('address[street1]') %>
-  <%= submit_tag("Weather") %>
+<%= form_with(url: "weather/show", method: "patch") do %>
+  <%= label_tag("location[text]", "Search for:") %>
+  <%= text_field_tag("location[text]") %>
+  <%= submit_tag("Search") %>
 <% end %>
-
-
-<%= @location %>

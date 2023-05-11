@@ -13,7 +13,7 @@ RSpec.describe Weather, type: :model do
   end
 
   describe ".forecast" do
-    it "returns a list of Forecast objects" do
+    it "returns an array of Forecast objects" do
       weather_api = Weather.new(lat, lon)
 
       forecast = weather_api.forecast

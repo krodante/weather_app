@@ -2,17 +2,6 @@ class WeatherController < ApplicationController
   skip_before_action :verify_authenticity_token, :only => [:index, :show]
 
   def index
-    # binding.pry
-    @location = Location.new
-    # @weather_api = @location ? Weather.new(@location.lat, @location.lon) : nil
-    # @location = if params["location"]
-    # # @hash = Rails.cache.fetch('something', expires_in: 30.minutes) do
-    # #   StatsClient.products
-    # # end
-    #   Location.new(location_params).set_coordinates
-    # else
-    #   Location.new
-    # end
   end
   
   def show

@@ -11,7 +11,7 @@ class Weather
           lat: lat,
           lon: lon,
           units: "imperial",
-          appid: API_KEY
+          appid: Rails.application.credentials.weather_api_key
         }
       )
     end

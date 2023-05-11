@@ -1,21 +1,87 @@
 require 'rails_helper'
 
 RSpec.describe Geocoder, type: :model do
-  let(:valid_params) {
-    {
-      street1: "1034 Park Pacifica Ave",
-      city: "Pacifica",
-      state: "CA"
-    }
-  }
+  let(:json_response) { File.read("#{__dir__}/../support/geocoder/#{json_response_file}") }
+  let(:stubs) { Faraday::Adapter::Test::Stubs.new }
+  let(:conn) { Faraday.new { |b| b.adapter(:test, stubs) } }
+  let(:location) { Location.new(text: "New Address") }
+  let(:geocoder) { described_class.new(location, conn) }
 
-  describe ".format_address" do
-    it "initializes with formatted address" do
-      address = Location.new(valid_params)
-      geocoder = Geocoder.new(address)
-      formatted = geocoder.format_address(address)
+  after do
+    Faraday.default_connection = nil
+  end
 
-      expect(formatted).to eq("1034+Park+Pacifica+Ave+Pacifica+CA")
+  describe ".convert_to_lat_lon" do
+    let(:json_response_file) { "200.json" }
+
+    it "calls the Geocoder API and returns location data" do
+      stubs.get("/v1/geocode/search") do
+        [200, { 'Content-Type': 'application/json' }, json_response]
+      end
+
+      response = geocoder.convert_to_lat_lon
+
+      expect(response["lat"]).to eq(JSON.parse(json_response)["results"].first["lat"])
+      stubs.verify_stubbed_calls
     end
   end
+
+  describe "401 - Unauthorized" do
+    let(:json_response_file) { "401.json" }
+
+    it "returns Geocoder::Errors::UnauthorizedError when unauthorized" do
+      stubs.get("/v1/geocode/search") do
+        [401, { 'Content-Type': 'application/json' }, json_response]
+      end
+      
+      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::UnauthorizedError, "Invalid apiKey")
+    end
+  end
+
+  describe "400 - FormatError" do
+    let(:json_response_file) { "400.json" }
+
+    it "returns Geocoder::Errors::FormatError when an invalid format is requested" do
+      stubs.get("/v1/geocode/search") do
+        [400, { 'Content-Type': 'application/json' }, json_response]
+      end
+
+      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::FormatError, "\"format\" must be one of [json, geojson, xml]")
+    end
+  end
+
+  describe "500 - SystemError" do
+    let(:json_response_file) { "500.json" }
+
+    it "returns Geocoder::Errors::SystemError when an invalid format is requested" do
+      stubs.get("/v1/geocode/search") do
+        [500, { 'Content-Type': 'application/json' }, json_response]
+      end
+
+      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::SystemError, "System Error")
+    end
+  end
+
+  describe "500 - Empty Results" do
+    let(:json_response_file) { "200_empty.json" }
+
+    it "returns Geocoder::Errors::SystemError when an invalid format is requested" do
+      stubs.get("/v1/geocode/search") do
+        [200, { 'Content-Type': 'application/json' }, json_response]
+      end
+
+      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::SystemError, "No results for query: #{JSON.parse(json_response)["query"]["text"]}")
+    end
+  end
+
+  # describe ".format_address" do
+  #   it "initializes with formatted address" do
+  #     address = Location.new(valid_params)
+  #     geocoder = Geocoder.new(address)
+  #     formatted = geocoder.format_address(address)
+
+  #     expect(formatted).to eq("1034+Park+Pacifica+Ave+Pacifica+CA")
+  #   end
+  # end
+
 end

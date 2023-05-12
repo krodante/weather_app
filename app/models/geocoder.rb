@@ -10,7 +10,7 @@ class Geocoder
     )
   end
 
-  def convert_to_lat_lon
+  def find_from_address
     response = @conn.get('/v1/geocode/search')
 
     json_response = JSON.parse(response.body)

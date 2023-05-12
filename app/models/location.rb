@@ -7,11 +7,15 @@ class Location
     @text = params[:text]
   end
 
-  def set_coordinates
+  def set_location_data
     geocoder = Geocoder.new(self)
-    coordinates = geocoder.convert_to_lat_lon
-    @lat = coordinates['lat']
-    @lon = coordinates['lon']
+    location_data = geocoder.find_from_address
+    @lat = location_data['lat']
+    @lon = location_data['lon']
     self
+  end
+
+  def parse_zipcode
+    text.match(/\d{1,5}/).to_s
   end
 end

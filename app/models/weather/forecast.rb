@@ -2,13 +2,14 @@
 
 class Weather
   class Forecast
-    attr_accessor :description, :feels_like, :humidity, :part_of_day, :precipitation_chance, :rain_volume,
+    attr_accessor :description, :feels_like, :humidity, :name, :part_of_day, :precipitation_chance, :query, :rain_volume,
                   :snow_volume, :temp, :temp_max, :temp_min, :time, :title, :wind_gust, :wind_speed, :visibility
 
     def initialize(forecast)
       @description = forecast['weather'].first['description']
       @feels_like = forecast['main']['feels_like']
       @humidity = forecast['main']['humidity']
+      @name = forecast['name']
       @part_of_day = forecast['sys']['pod']
       @precipitation_chance = forecast['pop']
       @rain_volume = try_precip(forecast, 'rain')

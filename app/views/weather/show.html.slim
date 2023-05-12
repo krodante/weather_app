@@ -1,6 +1,6 @@
 .container
   h2
-    | Current Weather 
+    = "Current weather for #{@weather_current.name}"
     small.text-muted
       - if @read_from_cache
         span.glyphicon.glyphicon-cloud aria-hidden="true"
@@ -9,7 +9,7 @@
     .row
       .col-12.col-sm-8.col-md-6.col-lg-4 style="border: 1px solid black;"
         .card
-          .card-body 
+          .card-body
             h4.card-title.text-center = @weather_current.description
             h3.card-title.text-center = format_temp(@weather_current.temp)
             h5.card-subtitle.text-muted.text-center = "Feels like #{format_temp(@weather_current.feels_like)}"
@@ -25,10 +25,10 @@
 
   h2 Extended Forecast
 
-  .container 
+  .container
     .row
       - @weather_forecast.each do |day|
-        .col-md-2 
+        .col-md-2
           h3.text-center = day.first.strftime("%a %b %d, %Y")
           - day.last.each do |unit|
             .card style="border: 1px solid black;"

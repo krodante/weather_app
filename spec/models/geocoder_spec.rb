@@ -13,7 +13,7 @@ RSpec.describe Geocoder do
     Faraday.default_connection = nil
   end
 
-  describe '.convert_to_lat_lon' do
+  describe '.find_from_address' do
     let(:json_response_file) { '200.json' }
 
     it 'calls the Geocoder API and returns location data' do
@@ -21,7 +21,7 @@ RSpec.describe Geocoder do
         [200, { 'Content-Type': 'application/json' }, json_response]
       end
 
-      response = geocoder.convert_to_lat_lon
+      response = geocoder.find_from_address
 
       expect(response['lat']).to eq(JSON.parse(json_response)['results'].first['lat'])
       stubs.verify_stubbed_calls
@@ -36,7 +36,7 @@ RSpec.describe Geocoder do
         [401, { 'Content-Type': 'application/json' }, json_response]
       end
 
-      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::UnauthorizedError, 'Invalid apiKey')
+      expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::UnauthorizedError, 'Invalid apiKey')
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe Geocoder do
       end
 
       expect do
-        geocoder.convert_to_lat_lon
+        geocoder.find_from_address
       end.to raise_error(Geocoder::Errors::FormatError,
                          '"format" must be one of [json, geojson, xml]')
     end
@@ -63,7 +63,7 @@ RSpec.describe Geocoder do
         [500, { 'Content-Type': 'application/json' }, json_response]
       end
 
-      expect { geocoder.convert_to_lat_lon }.to raise_error(Geocoder::Errors::SystemError, 'System Error')
+      expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::SystemError, 'System Error')
     end
   end
 
@@ -76,7 +76,7 @@ RSpec.describe Geocoder do
       end
 
       expect do
-        geocoder.convert_to_lat_lon
+        geocoder.find_from_address
       end.to raise_error(Geocoder::Errors::SystemError,
                          "No results for query: #{JSON.parse(json_response)['query']['text']}")
     end

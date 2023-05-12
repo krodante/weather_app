@@ -43,7 +43,7 @@ class WeatherController < ApplicationController
 
     return if zipcode.blank?
 
-    Rails.cache.fetch(zipcode, expires_in: 30.minute) do
+    Rails.cache.fetch(zipcode, expires_in: 30.minutes) do
       # this block the return of this block
       # writes to the cache when the key is not found
 

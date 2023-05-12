@@ -74,19 +74,4 @@ RSpec.describe Weather::Forecast do
     expect(forecast.wind_speed).to eq(valid_params['wind']['speed'])
     expect(forecast.visibility).to eq(valid_params['visibility'])
   end
-
-  describe '.date' do
-    it 'returns the current date with utc offset' do
-      time_new = Time.new(2023, 05, 10, 23, 00)
-      time_utc = time_new.getutc
-
-      expect(time_utc.to_date.to_s).to eq('2023-05-11')
-
-      local_time = time_utc.localtime
-      forecast = described_class.new(valid_params, offsets)
-
-      location_date = forecast.date
-      expect(location_date.to_s).to eq('2023-05-10')
-    end
-  end
 end

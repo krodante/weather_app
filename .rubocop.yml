@@ -22,13 +22,15 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
 
+Metrics/AbcSize:
+  Max: 35
+  Enabled: true
+
 Metrics/MethodLength:
-  Description: 'Avoid methods longer than 15 lines of code.'
   Max: 20
   Enabled: true
 
 RSpec/ExampleLength:
-  Description: ' Example has too many lines.'
   Max: 20
   Enabled: true
 
@@ -36,6 +38,5 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/MultipleMemoizedHelpers:
-  Description: 'Example group has too many memoized helpers.'
   Max: 10
   Enabled: true

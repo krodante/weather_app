@@ -2,7 +2,10 @@
 
 require 'faraday'
 
+# Handles interactions with the Geoapify API
 class Geocoder
+  # Initialize the Faraday connection
+  # conn is injectable for testing
   def initialize(location, conn = nil)
     @conn = conn || Faraday.new(
       url: 'https://api.geoapify.com',

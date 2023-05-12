@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Weather
+  # Handles instance attributes for Weather::Forecast objects
   class Forecast
     attr_accessor :description, :feels_like, :humidity, :name, :part_of_day, :precipitation_chance, :rain_volume,
                   :snow_volume, :temp, :temp_max, :temp_min, :time, :title, :wind_gust, :wind_speed, :visibility
@@ -24,6 +25,7 @@ class Weather
       @visibility = forecast['visibility']
     end
 
+    # checks if the precipitation type is present in the response
     def try_precip(forecast, precip)
       return unless forecast[precip]
 

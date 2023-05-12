@@ -4,6 +4,8 @@ require 'faraday'
 
 # handles calling the OpenWeatherMap API and handling the response data
 class Weather
+  # Initialize the Faraday connection
+  # conn is injectable for testing
   def initialize(lat, lon, conn = nil)
     return unless lat && lon
 
@@ -18,6 +20,7 @@ class Weather
     )
   end
 
+  # combines the current forecast and five_day_forecast for caching
   def cache_json
     {
       current_forecast: current,
@@ -25,6 +28,7 @@ class Weather
     }
   end
 
+  # calls OpenWeatherMap's [Current Weather API](https://openweathermap.org/current)
   def current
     response = @conn.get('/data/2.5/weather')
     json_response = JSON.parse(response.body)
@@ -36,6 +40,7 @@ class Weather
     end
   end
 
+  # calls OpenWeatherMap's [5 day / 3 hour Forecast API](https://openweathermap.org/forecast5)
   def forecast
     response = @conn.get('/data/2.5/forecast')
     json_response = JSON.parse(response.body)

@@ -28,67 +28,59 @@ RSpec.describe Geocoder do
     end
   end
 
-  describe '401 - Unauthorized' do
-    let(:json_response_file) { '401.json' }
+  describle 'Error Handling' do
+    describe '401 - Unauthorized' do
+      let(:json_response_file) { '401.json' }
 
-    it 'returns Geocoder::Errors::UnauthorizedError when unauthorized' do
-      stubs.get('/v1/geocode/search') do
-        [401, { 'Content-Type': 'application/json' }, json_response]
+      it 'returns Geocoder::Errors::UnauthorizedError when unauthorized' do
+        stubs.get('/v1/geocode/search') do
+          [401, { 'Content-Type': 'application/json' }, json_response]
+        end
+
+        expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::UnauthorizedError, 'Invalid apiKey')
       end
+    end
 
-      expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::UnauthorizedError, 'Invalid apiKey')
+    describe '400 - FormatError' do
+      let(:json_response_file) { '400.json' }
+
+      it 'returns Geocoder::Errors::FormatError when an invalid format is requested' do
+        stubs.get('/v1/geocode/search') do
+          [400, { 'Content-Type': 'application/json' }, json_response]
+        end
+
+        expect do
+          geocoder.find_from_address
+        end.to raise_error(Geocoder::Errors::FormatError,
+                           '"format" must be one of [json, geojson, xml]')
+      end
+    end
+
+    describe '500 - SystemError' do
+      let(:json_response_file) { '500.json' }
+
+      it 'returns Geocoder::Errors::SystemError when an invalid format is requested' do
+        stubs.get('/v1/geocode/search') do
+          [500, { 'Content-Type': 'application/json' }, json_response]
+        end
+
+        expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::SystemError, 'System Error')
+      end
+    end
+
+    describe '500 - Empty Results' do
+      let(:json_response_file) { '200_empty.json' }
+
+      it 'returns Geocoder::Errors::SystemError when an invalid format is requested' do
+        stubs.get('/v1/geocode/search') do
+          [200, { 'Content-Type': 'application/json' }, json_response]
+        end
+
+        expect do
+          geocoder.find_from_address
+        end.to raise_error(Geocoder::Errors::SystemError,
+                           "No results for query: #{JSON.parse(json_response)['query']['text']}")
+      end
     end
   end
-
-  describe '400 - FormatError' do
-    let(:json_response_file) { '400.json' }
-
-    it 'returns Geocoder::Errors::FormatError when an invalid format is requested' do
-      stubs.get('/v1/geocode/search') do
-        [400, { 'Content-Type': 'application/json' }, json_response]
-      end
-
-      expect do
-        geocoder.find_from_address
-      end.to raise_error(Geocoder::Errors::FormatError,
-                         '"format" must be one of [json, geojson, xml]')
-    end
-  end
-
-  describe '500 - SystemError' do
-    let(:json_response_file) { '500.json' }
-
-    it 'returns Geocoder::Errors::SystemError when an invalid format is requested' do
-      stubs.get('/v1/geocode/search') do
-        [500, { 'Content-Type': 'application/json' }, json_response]
-      end
-
-      expect { geocoder.find_from_address }.to raise_error(Geocoder::Errors::SystemError, 'System Error')
-    end
-  end
-
-  describe '500 - Empty Results' do
-    let(:json_response_file) { '200_empty.json' }
-
-    it 'returns Geocoder::Errors::SystemError when an invalid format is requested' do
-      stubs.get('/v1/geocode/search') do
-        [200, { 'Content-Type': 'application/json' }, json_response]
-      end
-
-      expect do
-        geocoder.find_from_address
-      end.to raise_error(Geocoder::Errors::SystemError,
-                         "No results for query: #{JSON.parse(json_response)['query']['text']}")
-    end
-  end
-
-  # describe ".format_address" do
-  #   it "initializes with formatted address" do
-  #     address = Location.new(valid_params)
-  #     geocoder = Geocoder.new(address)
-  #     formatted = geocoder.format_address(address)
-
-  #     expect(formatted).to eq("1034+Park+Pacifica+Ave+Pacifica+CA")
-  #   end
-  # end
 end

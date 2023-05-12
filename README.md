@@ -45,7 +45,7 @@ The assignment has the following <strong>requirements</strong>:
 
 ## Usage
 Fetch current and forecast weather for a given address.
-* In the browser, navigate to the root url `localhost:3000`
+* In the browser, navigate to the root url [http://localhost:3000/](http://localhost:3000/)
 * Enter any address
 	* Address <strong>must</strong> contain a zip code. If there is no zip code, an error is returned.
 * Current and Forecast weather is shown on the `weather/show` page.

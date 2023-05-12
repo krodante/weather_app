@@ -28,7 +28,7 @@ RSpec.describe Geocoder do
     end
   end
 
-  describle 'Error Handling' do
+  describe 'Error Handling' do
     describe '401 - Unauthorized' do
       let(:json_response_file) { '401.json' }
 

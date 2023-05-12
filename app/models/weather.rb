@@ -21,33 +21,33 @@ class Weather
   end
 
   # combines the current forecast and five_day_forecast for caching
-  def cache_json
+  def cache_json(offsets = {})
     {
-      current_forecast: current,
-      five_day_forecast: forecast
+      current_forecast: current(offsets),
+      five_day_forecast: forecast(offsets)
     }
   end
 
   # calls OpenWeatherMap's [Current Weather API](https://openweathermap.org/current)
-  def current
+  def current(offsets)
     response = @conn.get('/data/2.5/weather')
     json_response = JSON.parse(response.body)
 
     if [200, '200'].include?(json_response['cod'])
-      Weather::Forecast.new(json_response)
+      Weather::Forecast.new(json_response, offsets)
     else
       show_errors(json_response)
     end
   end
 
   # calls OpenWeatherMap's [5 day / 3 hour Forecast API](https://openweathermap.org/forecast5)
-  def forecast
+  def forecast(offsets)
     response = @conn.get('/data/2.5/forecast')
     json_response = JSON.parse(response.body)
 
     if [200, '200'].include?(json_response['cod'])
       json_response['list'].map do |forecast|
-        Weather::Forecast.new(forecast)
+        Weather::Forecast.new(forecast, offsets)
       end
     else
       show_errors(json_response)

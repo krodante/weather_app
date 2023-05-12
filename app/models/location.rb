@@ -6,8 +6,6 @@ class Location
 
   def initialize(params = {})
     @text = params[:text]
-    @offset_dst_seconds = params[:offset_dst_seconds]
-    @offset_std_seconds = params[:offset_std_seconds]
   end
 
   # Calls the Geocoder API and sets attributes
@@ -23,15 +21,5 @@ class Location
 
   def parse_zipcode
     text.match(/\d{1,5}/).to_s
-  end
-
-  def date(time)
-    utc_time = Time.zone.at(time)
-    local_time = if utc_time.dst?
-                   utc_time + offset_dst_seconds
-                 else
-                   utc_time + offset_std_seconds
-                 end
-    local_time.to_date
   end
 end

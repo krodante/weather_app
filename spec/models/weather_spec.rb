@@ -9,6 +9,12 @@ RSpec.describe Weather do
   let(:lat) { 37.585232 }
   let(:lon) { -122.473095 }
   let(:weather_api) { described_class.new(lat, lon, conn) }
+  let(:offsets) {
+    {
+      dst_seconds: -25200,
+      std_seconds: -28800
+    }
+  }
 
   describe 'Error Handling' do
     describe '401 - Unauthorized' do
@@ -19,7 +25,7 @@ RSpec.describe Weather do
           [401, { 'Content-Type': 'application/json' }, json_response]
         end
 
-        expect { weather_api.current }.to raise_error(Weather::Errors::UnauthorizedError)
+        expect { weather_api.current(offsets) }.to raise_error(Weather::Errors::UnauthorizedError)
       end
     end
 
@@ -31,7 +37,7 @@ RSpec.describe Weather do
           [400, { 'Content-Type': 'application/json' }, json_response]
         end
 
-        expect { weather_api.current }.to raise_error(Weather::Errors::FormatError, 'wrong latitude')
+        expect { weather_api.current(offsets) }.to raise_error(Weather::Errors::FormatError, 'wrong latitude')
       end
     end
 
@@ -43,7 +49,7 @@ RSpec.describe Weather do
           [500, { 'Content-Type': 'application/json' }, json_response]
         end
 
-        expect { weather_api.current }.to raise_error(Weather::Errors::SystemError, 'System Error')
+        expect { weather_api.current(offsets) }.to raise_error(Weather::Errors::SystemError, 'System Error')
       end
     end
   end
@@ -56,7 +62,7 @@ RSpec.describe Weather do
         [200, { 'Content-Type': 'application/json' }, json_response]
       end
 
-      expect(weather_api.current.class).to eq(Weather::Forecast)
+      expect(weather_api.current(offsets).class).to eq(Weather::Forecast)
     end
   end
 
@@ -68,7 +74,7 @@ RSpec.describe Weather do
         [200, { 'Content-Type': 'application/json' }, json_response]
       end
 
-      forecast = weather_api.forecast
+      forecast = weather_api.forecast(offsets)
 
       expect(forecast).to be_an_instance_of(Array)
       expect(forecast.first.class).to eq(Weather::Forecast)

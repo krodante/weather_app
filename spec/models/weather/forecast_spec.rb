@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Weather::Forecast do
+  let(:offsets) do
+    {
+      dst_seconds: -25200,
+      std_seconds: -28800
+    }
+  end
+
   let(:valid_params) do
     {
       'coord' => {
@@ -49,7 +56,7 @@ RSpec.describe Weather::Forecast do
   end
 
   it 'is valid with valid attributes' do
-    forecast = described_class.new(valid_params)
+    forecast = described_class.new(valid_params, offsets)
 
     expect(forecast.description).to eq(valid_params['weather'].first['description'])
     expect(forecast.feels_like).to eq(valid_params['main']['feels_like'])
@@ -66,5 +73,20 @@ RSpec.describe Weather::Forecast do
     expect(forecast.wind_gust).to eq(valid_params['wind']['gust'])
     expect(forecast.wind_speed).to eq(valid_params['wind']['speed'])
     expect(forecast.visibility).to eq(valid_params['visibility'])
+  end
+
+  describe '.date' do
+    it 'returns the current date with utc offset' do
+      time_new = Time.new(2023, 05, 10, 23, 00)
+      time_utc = time_new.getutc
+
+      expect(time_utc.to_date.to_s).to eq('2023-05-11')
+
+      local_time = time_utc.localtime
+      forecast = described_class.new(valid_params, offsets)
+
+      location_date = forecast.date
+      expect(location_date.to_s).to eq('2023-05-10')
+    end
   end
 end

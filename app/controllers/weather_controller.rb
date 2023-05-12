@@ -16,7 +16,7 @@ class WeatherController < ApplicationController
     if cached_weather
       @weather_current = cached_weather[:current_forecast]
       @weather_forecast = cached_weather[:five_day_forecast].group_by do |forecast|
-        @location.date(forecast.time)
+        forecast.date
       end
     # fails when the request does not include a zipcode
     else
@@ -51,11 +51,17 @@ class WeatherController < ApplicationController
       @read_from_cache = false
       # call the Geocoder and set the Location's lat and lon
       @location.set_location_data
+
+      # send offsets to forecast object to show local forecast
+      offsets = {
+        dst_seconds: @location.offset_dst_seconds,
+        std_seconds: @location.offset_std_seconds
+      }
       # instantiate the Weather api with lat and lon
       weather_api = Weather.new(@location.lat, @location.lon)
       # use the Weather api to fetch current and forecast weather
       # and combine that into a single JSON block for the cache
-      weather_api.cache_json
+      weather_api.cache_json(offsets)
     end
   end
 end

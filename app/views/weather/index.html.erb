@@ -1,5 +1,0 @@
-<%= form_with(url: "weather/show", method: "patch", data: { turbo: false}) do %>
-  <%= label_tag("location[text]", "Search for:") %>
-  <%= text_field_tag("location[text]") %>
-  <%= submit_tag("Search") %>
-<% end %>

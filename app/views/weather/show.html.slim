@@ -1,0 +1,26 @@
+h1 Weather#show
+
+p = "cached" if @read_from_cache
+= link_to "Search again", "/"
+
+h2 Current Weather
+table
+  - @weather_current.instance_values.keys.each do |attr|
+    tr 
+      td = attr 
+      td = @weather_current.instance_values[attr]
+
+h2 Extended Forecast
+table
+  tr
+    - @weather_forecast.each do |day|
+      td
+        div = day.first
+        div
+          - day.last.each do |unit|
+            div
+              table
+                - unit.instance_values.keys.each do |attr|
+                  tr 
+                    td = attr 
+                    td = unit.instance_values[attr]

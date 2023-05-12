@@ -15,7 +15,7 @@ class WeatherController < ApplicationController
     end
 
     @weather_current = cached_weather[:current_forecast]
-    @weather_forecast = cached_weather[:five_day_forecast]
+    @weather_forecast = cached_weather[:five_day_forecast].group_by { |forecast| Time.at(forecast.time).to_date }
   end
 
   private

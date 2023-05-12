@@ -2,15 +2,14 @@ require "faraday"
 
 class Geocoder
   def initialize(location, conn = nil)
-    @location = location
     @conn = conn || Faraday.new(
       url: 'https://api.geoapify.com',
-      params: { apiKey: Rails.application.credentials.geocoder_api_key }
+      params: { apiKey: Rails.application.credentials.geocoder_api_key, text: location.text, format: 'json' }
     )
   end
 
   def convert_to_lat_lon
-    response = @conn.get('/v1/geocode/search', { text: @location.text, format: 'json' })
+    response = @conn.get('/v1/geocode/search')
 
     json_response = JSON.parse(response.body)
 

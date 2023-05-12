@@ -26,7 +26,7 @@ The assignment has the following <strong>requirements</strong>:
 	```
 3. Clone the repository
 	```
-	https://github.com/krodante/weather_app.git
+	git clone https://github.com/krodante/weather_app.git
 	```
 	<strong>Note:</strong> I uploaded the `master.key` file to the repository in order for the assessment to be sent with only a single github link. I would not add this file in a true production environment, and instead would send it securely or use Vault secrets.
 

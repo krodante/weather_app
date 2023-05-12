@@ -30,8 +30,9 @@ The assignment has the following <strong>requirements</strong>:
 	```
 	<strong>Note:</strong> I uploaded the `master.key` file to the repository in order for the assessment to be sent with only a single github link. I would not add this file in a true production environment, and instead would send it securely or use Vault secrets.
 
-4. Install gems
+4. Navigate to the project directy and install gems
 	```
+	cd weather_app
 	bundle install
 	```
 5. Run tests

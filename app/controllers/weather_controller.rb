@@ -32,7 +32,7 @@ class WeatherController < ApplicationController
 
     return if zipcode.blank?
 
-    Rails.cache.fetch(zipcode, expires_in: 1.minute) do
+    Rails.cache.fetch(zipcode, expires_in: 30.minutes) do
       @read_from_cache = false
       @location.set_location_data
       weather_api = Weather.new(@location.lat, @location.lon)

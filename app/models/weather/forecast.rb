@@ -2,7 +2,7 @@
 
 class Weather
   class Forecast
-    attr_accessor :description, :feels_like, :humidity, :name, :part_of_day, :precipitation_chance, :query, :rain_volume,
+    attr_accessor :description, :feels_like, :humidity, :name, :part_of_day, :precipitation_chance, :rain_volume,
                   :snow_volume, :temp, :temp_max, :temp_min, :time, :title, :wind_gust, :wind_speed, :visibility
 
     def initialize(forecast)

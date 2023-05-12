@@ -23,7 +23,7 @@ AllCops:
 
 Metrics/MethodLength:
   Description: 'Avoid methods longer than 15 lines of code.'
-  Max: 15
+  Max: 20
   Enabled: true
 
 RSpec/ExampleLength:

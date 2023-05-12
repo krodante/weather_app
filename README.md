@@ -52,3 +52,6 @@ Fetch current and forecast weather for a given address.
 	* It's a lot of information! Each column is one day, and each row of a column is a 3-hour segment.
 	* For example, if you search at 11pm on May 11, 2023, one column will have up to eight forecasts for May 12, 2023, with the timestamps 0:00, 3:00, 6:00, 9:00, 12:00, 15:00, 18:00, and 21:00
 * Click on the button or navigate back in the browser to return to the root url and search for another address.
+
+## Questions
+Please feel free to contact me at kathy.rodante@gmail.com if you have any questions. Thank you!

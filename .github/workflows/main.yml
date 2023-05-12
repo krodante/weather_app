@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
@@ -14,8 +14,7 @@ jobs:
           bundler-cache: true
 
       - name: Run linters
-        run: |
-          bin/rubocop --parallel
+        run: bin/rubocop --parallel
 
   tests:
     name: Tests
@@ -25,10 +24,12 @@ jobs:
         image: redis
         ports: ["6379:6379"]
         options: --entrypoint redis-server
-
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1

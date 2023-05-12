@@ -17,6 +17,7 @@ AllCops:
     - 'app/helpers/application_helper.rb'
     - 'app/mailers/*'
     - 'app/controllers/application_controller.rb'
+    - 'gemfiles/vendor/bundle/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
   NewCops: enable
   SuggestExtensions: false

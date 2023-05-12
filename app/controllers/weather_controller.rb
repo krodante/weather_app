@@ -15,9 +15,8 @@ class WeatherController < ApplicationController
 
     if cached_weather
       @weather_current = cached_weather[:current_forecast]
-      binding.pry
       @weather_forecast = cached_weather[:five_day_forecast].group_by do |forecast|
-        Time.zone.at(forecast.time).to_date
+        @location.date(forecast.time)
       end
     # fails when the request does not include a zipcode
     else
@@ -38,22 +37,22 @@ class WeatherController < ApplicationController
   end
 
   def read_or_write_cache
-    location = Location.new(location_params)
+    @location = Location.new(location_params)
     # parse the zipcode from the location_params
-    zipcode = location.parse_zipcode
+    zipcode = @location.parse_zipcode
 
     return if zipcode.blank?
 
-    Rails.cache.fetch(zipcode, expires_in: 30.minutes) do
+    Rails.cache.fetch(zipcode, expires_in: 30.minute) do
       # this block the return of this block
       # writes to the cache when the key is not found
 
       # indicates that we are not using cached data
       @read_from_cache = false
       # call the Geocoder and set the Location's lat and lon
-      location.set_location_data
+      @location.set_location_data
       # instantiate the Weather api with lat and lon
-      weather_api = Weather.new(location.lat, location.lon)
+      weather_api = Weather.new(@location.lat, @location.lon)
       # use the Weather api to fetch current and forecast weather
       # and combine that into a single JSON block for the cache
       weather_api.cache_json

@@ -12,5 +12,4 @@
 #
 
 en:
-  hello: "Hello world"
   zipcode_error: "The address must include a zipcode"

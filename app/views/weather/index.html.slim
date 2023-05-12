@@ -1,4 +1,14 @@
-= form_with(url: "weather/show", method: "patch", data: { turbo: false}) do
-  = label_tag("location[text]", "Search for:")
-  = text_field_tag("location[text]")
-  = submit_tag("Fetch Forecast")
+.container
+  = form_with(url: "weather/show", method: "patch", data: { turbo: false}, class: "form") do
+    .mt-10
+      .col-md-2
+        = label_tag("location[text]", "Search for:", class: "col-form-label")
+      .col-md-4
+        = text_field_tag("location[text]", "", class: "form-control")
+      .col-md-2
+        = submit_tag("Fetch Forecast", class: "btn btn-lg")
+
+  / = form_with(url: "weather/show", method: "patch", data: { turbo: false}) do
+  /   = label_tag("location[text]", "Search for:")
+  /   = text_field_tag("location[text]")
+  /

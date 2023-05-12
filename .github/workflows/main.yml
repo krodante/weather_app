@@ -12,7 +12,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run linters
-        run: rubocop --parallel
+        run: bundle exec rubocop --parallel
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
         with:
           bundler-cache: true
       - name: Run tests
-        run: rspec
+        run: bundle exec rspec spec

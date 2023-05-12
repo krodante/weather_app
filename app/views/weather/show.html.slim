@@ -1,26 +1,45 @@
-h1 Weather#show
+.container
+  h2
+    | Current Weather 
+    small.text-muted
+      - if @read_from_cache
+        span.glyphicon.glyphicon-cloud aria-hidden="true"
+        span style="padding-left: 0.5em;" Loaded from Cache
+  .container
+    .row
+      .col-12.col-sm-8.col-md-6.col-lg-4 style="border: 1px solid black;"
+        .card
+          .card-body 
+            h4.card-title.text-center = @weather_current.description
+            h3.card-title.text-center = format_temp(@weather_current.temp)
+            h5.card-subtitle.text-muted.text-center = "Feels like #{format_temp(@weather_current.feels_like)}"
+            ul.list-group.list-group-horizontal
+              li.list-group-item = "Min: #{format_temp(@weather_current.temp_min)}"
+              li.list-group-item = "Max: #{format_temp(@weather_current.temp_max)}"
+              li.list-group-item = "Humidity: #{@weather_current.humidity}%"
+              li.list-group-item = "Precipitation: #{precipitation_chance(@weather_current.precipitation_chance)}"
 
-p = "cached" if @read_from_cache
-= link_to "Search again", "/"
+  div style="margin-top: 1em;"
+    button.btn.btn-lg
+      = link_to "Search again", "/"
 
-h2 Current Weather
-table
-  - @weather_current.instance_values.keys.each do |attr|
-    tr 
-      td = attr 
-      td = @weather_current.instance_values[attr]
+  h2 Extended Forecast
 
-h2 Extended Forecast
-table
-  tr
-    - @weather_forecast.each do |day|
-      td
-        div = day.first
-        div
+  .container 
+    .row
+      - @weather_forecast.each do |day|
+        .col-md-2 
+          h3.text-center = day.first.strftime("%a %b %d, %Y")
           - day.last.each do |unit|
-            div
-              table
-                - unit.instance_values.keys.each do |attr|
-                  tr 
-                    td = attr 
-                    td = unit.instance_values[attr]
+            .card style="border: 1px solid black;"
+              .card-body
+                h4.card-title.text-center = "#{Time.at(unit.time).strftime("%I:%M%p")}"
+                h5.card-title.text-center = unit.description
+                h3.card-title.text-center = format_temp(unit.temp)
+                h5.card-subtitle.text-muted.text-center = "Feels like #{format_temp(unit.feels_like)}"
+                ul.list-group.list-group-horizontal
+                  li.list-group-item = "Min: #{format_temp(unit.temp_min)}"
+                  li.list-group-item = "Max: #{format_temp(unit.temp_max)}"
+                  li.list-group-item = "Humidity: #{unit.humidity}%"
+                  li.list-group-item = "Precipitation: #{precipitation_chance(unit.precipitation_chance)}"
+            hr

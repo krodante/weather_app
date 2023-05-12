@@ -1,4 +1,6 @@
-require "faraday"
+# frozen_string_literal: true
+
+require 'faraday'
 
 class Geocoder
   def initialize(location, conn = nil)
@@ -13,29 +15,23 @@ class Geocoder
 
     json_response = JSON.parse(response.body)
 
-    if json_response["results"].present?
-      json_response["results"].first
-    elsif json_response["statusCode"]
+    if json_response['results'].present?
+      json_response['results'].first
+    elsif json_response['statusCode']
       show_errors(json_response)
     else
-      raise Geocoder::Errors::SystemError.new("No results for query: #{json_response["query"]["text"]}")
+      raise Geocoder::Errors::SystemError, "No results for query: #{json_response['query']['text']}"
     end
   end
 
   def show_errors(json_response)
-    case json_response["statusCode"]
+    case json_response['statusCode']
     when 401
-      raise Geocoder::Errors::UnauthorizedError.new(json_response["message"])
-    when "401"
-      raise Geocoder::Errors::UnauthorizedError.new(json_response["message"])
+      raise Geocoder::Errors::UnauthorizedError, json_response['message']
     when 400
-      raise Geocoder::Errors::FormatError.new(json_response["message"])
-    when "400"
-      raise Geocoder::Errors::FormatError.new(json_response["message"])
+      raise Geocoder::Errors::FormatError, json_response['message']
     when 500
-      raise Geocoder::Errors::SystemError.new(json_response["message"])
-    when "500"
-      raise Geocoder::Errors::SystemError.new(json_response["message"])
+      raise Geocoder::Errors::SystemError, json_response['message']
     end
   end
 

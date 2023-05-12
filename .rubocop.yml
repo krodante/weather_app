@@ -1,8 +1,40 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 AllCops:
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
-    - 'bin/{rails,rake}'
+    - 'bin/*'
+    - 'spec/rails_helper.rb'
+    - 'spec/spec_helper.rb'
+    - 'test/**/*'
+    - 'config.ru'
+    - 'app/channels/**/*'
+    - 'Rakefile'
+    - 'app/helpers/application_helper.rb'
+    - 'app/mailers/*'
+    - 'app/controllers/application_controller.rb'
     - !ruby/regexp /old_and_unused\.rb$/
   NewCops: enable
+  SuggestExtensions: false
+
+Metrics/MethodLength:
+  Description: 'Avoid methods longer than 15 lines of code.'
+  Max: 15
+  Enabled: true
+
+RSpec/ExampleLength:
+  Description: ' Example has too many lines.'
+  Max: 20
+  Enabled: true
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Description: 'Example group has too many memoized helpers.'
+  Max: 10
+  Enabled: true

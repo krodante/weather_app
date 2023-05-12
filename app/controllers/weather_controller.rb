@@ -1,9 +1,10 @@
-class WeatherController < ApplicationController
-  skip_before_action :verify_authenticity_token, :only => [:index, :show]
+# frozen_string_literal: true
 
-  def index
-  end
-  
+class WeatherController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: %i[index show]
+
+  def index; end
+
   def show
     @read_from_cache = true
     encoded_location = Base64.encode64(location_params[:text])
@@ -15,13 +16,12 @@ class WeatherController < ApplicationController
     end
 
     @weather_current = cached_weather[:current_forecast]
-    @weather_forecast = cached_weather[:five_day_forecast].group_by { |forecast| Time.at(forecast.time).to_date }
+    @weather_forecast = cached_weather[:five_day_forecast].group_by { |forecast| Time.zone.at(forecast.time).to_date }
   end
 
   private
 
-    def location_params
-      permitted = params.require(:location).permit(:text)
-      permitted
-    end
+  def location_params
+    params.require(:location).permit(:text)
+  end
 end
